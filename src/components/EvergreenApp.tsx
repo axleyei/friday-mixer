@@ -536,8 +536,7 @@ export default function EvergreenApp() {
         <div className="w-72 shrink-0 flex flex-col gap-4 overflow-y-auto pb-4">
 
           {/* Issue number */}
-          <SectionCard title="Issue">
-            <label className="block text-sm text-slate-400 mb-1">Issue #</label>
+          <SectionCard title="Issue #">
             <input
               type="text"
               inputMode="numeric"
@@ -704,7 +703,7 @@ export default function EvergreenApp() {
             {!canExportThumb ? (
               <p className="text-xs text-slate-600 text-center leading-relaxed">
                 {!issueValid && !effectiveThumbImage
-                  ? 'Enter an issue number and upload an image.'
+                  ? 'Enter an issue # and upload an image.'
                   : !issueValid
                   ? 'Enter a valid issue number.'
                   : 'Upload an image to continue.'}
@@ -766,6 +765,9 @@ export default function EvergreenApp() {
                 rows={3}
                 className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-colors resize-none text-sm leading-relaxed"
               />
+              <p className="text-xs text-slate-600 mt-1.5">
+                Tip: Type &lsquo;\n&rsquo; for a manual line break.
+              </p>
             </div>
 
             <div>
@@ -816,10 +818,12 @@ export default function EvergreenApp() {
 
             {!canExportStory ? (
               <p className="text-xs text-slate-600 text-center leading-relaxed">
-                {!effectiveStoryImage
-                  ? 'Upload an image to continue.'
+                {!issueValid && !effectiveStoryImage
+                  ? 'Enter an issue # and upload an image.'
                   : !issueValid
                   ? 'Enter a valid issue number.'
+                  : !effectiveStoryImage
+                  ? 'Upload an image to continue.'
                   : 'Fill in headline, author name, and author title.'}
               </p>
             ) : (

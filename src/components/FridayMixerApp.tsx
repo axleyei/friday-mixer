@@ -64,6 +64,9 @@ export default function FridayMixerApp() {
   const [imageError, setImageError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
+  // FPO placeholder (shown in canvas preview only; never exported)
+  const [fpoImage, setFpoImage] = useState<HTMLImageElement | null>(null);
+
   // Asset / app state
   const [assetsLoaded, setAssetsLoaded] = useState(false);
   const [assetsError, setAssetsError] = useState(false);
@@ -98,6 +101,14 @@ export default function FridayMixerApp() {
 
   const canExport = !!featureImage && !imageError && issueValid && assetsLoaded;
 
+  // ─── FPO placeholder image ────────────────────────────────────────────────
+
+  useEffect(() => {
+    loadImage('/assets/test_pattern_sq.png')
+      .then((img) => setFpoImage(img))
+      .catch(() => {}); // silent — canvas just renders without a background image
+  }, []);
+
   // ─── Asset loading ────────────────────────────────────────────────────────
 
   useEffect(() => {
@@ -122,12 +133,12 @@ export default function FridayMixerApp() {
     if (!assetsLoaded || !canvasRef.current || isAnimating) return;
     renderFrameVariant({
       canvas: canvasRef.current,
-      featureImage,
+      featureImage: featureImage ?? fpoImage,
       textColor: effectiveTextColor,
       frameColor: effectiveFrameColor,
       variant: 'A',
     });
-  }, [assetsLoaded, featureImage, effectiveTextColor, effectiveFrameColor, isAnimating]);
+  }, [assetsLoaded, featureImage, fpoImage, effectiveTextColor, effectiveFrameColor, isAnimating]);
 
   // ─── Image handling ───────────────────────────────────────────────────────
 
@@ -305,10 +316,7 @@ export default function FridayMixerApp() {
         {/* ── Left column: Controls ──────────────────────────────────────── */}
         <div className="w-72 shrink-0 flex flex-col gap-4">
           {/* Issue number */}
-          <SectionCard title="Issue">
-            <label className="block text-sm text-slate-400 mb-1">
-              Issue #
-            </label>
+          <SectionCard title="Issue #">
             <input
               type="text"
               inputMode="numeric"
@@ -415,9 +423,6 @@ export default function FridayMixerApp() {
           {/* Color pairing */}
           <SectionCard title="Colors">
             <div>
-              <label className="block text-sm text-slate-400 mb-1">
-                Color pairing
-              </label>
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 flex gap-1 pointer-events-none">
                   <ColorSwatch hex={effectiveTextColor} />
@@ -580,7 +585,7 @@ export default function FridayMixerApp() {
 
           <div
             className="relative w-full rounded-xl overflow-hidden bg-slate-950 shadow-2xl shadow-black/50 ring-1 ring-slate-700/50"
-            style={{ aspectRatio: `${CANVAS_W}/${CANVAS_H}` }}
+            style={{ aspectRatio: `${CANVAS_W}/${CANVAS_H}`, maxWidth: 1010 }}
           >
             <canvas
               ref={canvasRef}

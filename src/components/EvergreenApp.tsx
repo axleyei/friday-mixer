@@ -520,20 +520,15 @@ export default function EvergreenApp() {
   // ─── Render ──────────────────────────────────────────────────────────────────
 
   return (
-    <div className="h-screen bg-slate-900 text-white flex flex-col overflow-hidden">
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <header className="border-b border-slate-700/60 px-6 py-4 shrink-0">
-        <h1 className="text-lg font-bold tracking-tight">Evergreen Generator</h1>
-        <p className="text-slate-400 text-sm mt-0.5">
-          Composite images for The So What
-        </p>
-      </header>
-
+    <div className="h-full flex flex-col overflow-hidden">
       {/* ── Main ───────────────────────────────────────────────────────────── */}
       <main className="flex gap-6 p-6 flex-1 min-h-0">
 
         {/* ── Left column: Controls ──────────────────────────────────────── */}
         <div className="w-72 shrink-0 flex flex-col gap-4 overflow-y-auto pb-4">
+
+          {/* Generator title */}
+          <h1 className="text-base font-bold tracking-tight text-white px-1">Evergreen Generator</h1>
 
           {/* Issue number */}
           <SectionCard title="Issue #">
